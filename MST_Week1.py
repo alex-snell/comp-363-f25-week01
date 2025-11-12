@@ -71,8 +71,8 @@ class mst():
 
     def safe_edge(self):
         is_safe_edge = False
-        for i in range(len(F)):
-            for j in range(i+1, len(F)):
+        for i in range(len(self.F)):
+            for j in range(i+1, len(self.F)):
                 #check if there is an edge in original graph G, and if its not yet in our spanning tree
                 #also checks that numCompents at index i does not match the num compents at index j
                 if self.G[i][j]== 1 and self.F[i][j] == 0 and self.comp[i] != self.comp[j]:
@@ -91,20 +91,22 @@ class mst():
         self.set_F(F)
         #call count and label
         self.count_label()
-        #save count as an independ variable
-        count = self.count
-        while count > 1:
+        #count edges added
+        edges_added = 0
+        n = len(self.G)
+        while edges_added < n-1:
             #check for safe edge
             if self.safe_edge():
+                edges_added += 1
                 #if there is reset all values
                 self.marked = set()
                 self.comp = {}
                 self.count = 0
                 self.count_label()
-                count = self.count
+                
             else:
-                #if not a safe edge break loop by setting count to 1
-                count = 1
+                #if not a safe edge break loop by setting edges_added to n -1
+                edges_added = n -1
             #return spanning tree
         return F
     #helper methods
